@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design Patterns Explained</title>
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+    <button id="theme-toggle" aria-label="Toggle Theme">🌙</button>
+    
+    <header>
+        <h1>Understanding Design Patterns</h1>
+        <p>Design patterns are reusable solutions to common problems in software design. They are not specific implementations but rather templates or blueprints that can be adapted to various situations. This page explains a selection of common design patterns with brief explanations and C# code examples.</p>
+    </header>
+
+    <section id="navigation">        
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="design-patterns.html">Design Patterns</a></li>
+            </ul>
+        </nav>
+    </section>
+
+
+    <section>
+        <h2>1. Factory Method Pattern</h2>
+        <h3>Explanation:</h3>
+        <p>The Factory Method pattern defines an interface for creating an object, but lets subclasses decide which class to instantiate. It defers instantiation to subclasses, promoting loose coupling between the creator and the concrete products it creates.</p>
+        <h3>C# Example:</h3>
+        <pre><code class="language-csharp">
+// Product Interface
+public interface IProduct
+{
+    string GetName();
+}
+
+// Concrete Products
+public class ProductA : IProduct
+{
+    public string GetName() => "Product A";
+}
+
+public class ProductB : IProduct
+{
+    public string GetName() => "Product B";
+}
+
+// Creator Interface
+public abstract class Creator
+{
+    public abstract IProduct FactoryMethod();
+
+    public void AnOperation()
+    {
+        IProduct product = FactoryMethod();
+        Console.WriteLine($"Creator: Working with {product.GetName()}");
+    }
+}
+
+// Concrete Creators
+public class ConcreteCreatorA : Creator
+{
+    public override IProduct FactoryMethod() => new ProductA();
+}
+
+public class ConcreteCreatorB : Creator
+{
+    public override IProduct FactoryMethod() => new ProductB();
+}
+
+// Usage:
+// Creator creatorA = new ConcreteCreatorA();
+// creatorA.AnOperation();
+// Creator creatorB = new ConcreteCreatorB();
+// creatorB.AnOperation();
+        </code></pre>
+    </section>
+
+    <section>
+        <h2>2. Abstract Factory Pattern</h2>
+        <h3>Explanation:</h3>
+        <p>The Abstract Factory pattern provides an interface for creating families of related or dependent objects without specifying their concrete classes. It's useful when you need to create a group of related objects, but you want to ensure that the concrete classes of these objects are interchangeable without changing the client code.</p>
+        <h3>C# Example:</h3>
+        <pre><code class="language-csharp">
+// Abstract Products
+public interface IChair { void SitOn(); }
+public interface ITable { void PutOn(); }
+
+// Concrete Products
+public class ModernChair : IChair { public void SitOn() => Console.WriteLine("Sitting on a modern chair."); }
+public class ModernTable : ITable { public void PutOn() => Console.WriteLine("Putting things on a modern table."); }
+public class VictorianChair : IChair { public void SitOn() => Console.WriteLine("Sitting on a victorian chair."); }
+public class VictorianTable : ITable { public void PutOn() => Console.WriteLine("Putting things on a victorian table."); }
+
+// Abstract Factory
+public interface IAbstractFactory
+{
+    IChair CreateChair();
+    ITable CreateTable();
+}
+
+// Concrete Factories
+public class ModernFactory : IAbstractFactory
+{
+    public IChair CreateChair() => new ModernChair();
+    public ITable CreateTable() => new ModernTable();
+}
+
+public class VictorianFactory : IAbstractFactory
+{
+    public IChair CreateChair() => new VictorianChair();
+    public ITable CreateTable() => new VictorianTable();
+}
+
+// Client Code
+public class Client
+{
+    public void Main(IAbstractFactory factory)
+    {
+        IChair chair = factory.CreateChair();
+        ITable table = factory.CreateTable();
+        chair.SitOn();
+        table.PutOn();
+    }
+}
+
+// Usage:
+// Client client = new Client();
+// client.Main(new ModernFactory());
+// client.Main(new VictorianFactory());
+        </code></pre>
+    </section>
+
+    <section>
+        <h2>3. Singleton Pattern</h2>
+        <h3>Explanation:</h3>
+        <p>The Singleton pattern ensures a class has only one instance and provides a global point of access to that instance. This is useful when exactly one object is needed to coordinate actions across the system, such as a logging service or a configuration manager.</p>
+        <h3>C# Example:</h3>
+        <pre><code class="language-csharp">
+public sealed class Singleton
+{
+    private static Singleton instance = null;
+    private static readonly object lockObject = new object();
+
+    private Singleton() { }
+
+    public static Singleton Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                lock (lockObject)
+                {
+                    if (instance == null)
+                    {
+                        instance = new Singleton();
+                    }
+                }
+            }
+            return instance;
+        }
+    }
+
+    public void ShowMessage()
+    {
+        Console.WriteLine("Hello from Singleton!");
+    }
+}
+
+// Usage:
+// Singleton.Instance.ShowMessage();
+        </code></pre>
+    </section>
+
+    <section>
+        <h2>4. Builder Pattern</h2>
+        <h3>Explanation:</h3>
+        <p>The Builder pattern separates the construction of a complex object from its representation, allowing the same construction process to create different representations. It's useful when you need to create complex objects with many optional parts or when the construction process involves multiple steps.</p>
+        <h3>C# Example:</h3>
+        <pre><code class="language-csharp">
+// Product
+public class Car
+{
+    public string Engine { get; set; }
+    public string Wheels { get; set; }
+    public string Color { get; set; }
+
+    public void Display()
+    {
+        Console.WriteLine($"Car: Engine={Engine}, Wheels={Wheels}, Color={Color}");
+    }
+}
+
+// Builder Interface
+public abstract class CarBuilder
+{
+    protected Car car;
+    public Car Car => car;
+
+    public abstract void BuildEngine();
+    public abstract void BuildWheels();
+    public abstract void BuildColor();
+}
+
+// Concrete Builder
+public class SportsCarBuilder : CarBuilder
+{
+    public SportsCarBuilder() { car = new Car(); }
+
+    public override void BuildEngine() { car.Engine = "V8 Sport"; }
+    public override void BuildWheels() { car.Wheels = "Alloy Sport"; }
+    public override void BuildColor() { car.Color = "Red"; }
+}
+
+// Director
+public class CarDirector
+{
+    public void Construct(CarBuilder builder)
+    {
+        builder.BuildEngine();
+        builder.BuildWheels();
+        builder.BuildColor();
+    }
+}
+
+// Usage:
+// CarDirector director = new CarDirector();
+// SportsCarBuilder builder = new SportsCarBuilder();
+// director.Construct(builder);
+// builder.Car.Display();
+        </code></pre>
+    </section>
+
+    <section>
+        <h2>5. Decorator Pattern</h2>
+        <h3>Explanation:</h3>
+        <p>The Decorator pattern attaches additional responsibilities to an object dynamically. Decorators provide a flexible alternative to subclassing for extending functionality. This pattern is ideal for adding new behaviors to objects without modifying their core structure, especially when these behaviors can be combined in various ways.</p>
+        <h3>C# Example:</h3>
+        <pre><code class="language-csharp">
+// Component Interface
+public interface ICoffee
+{
+    string GetDescription();
+    double GetCost();
+}
+
+// Concrete Component
+public class SimpleCoffee : ICoffee
+{
+    public string GetDescription() => "Simple Coffee";
+    public double GetCost() => 5.0;
+}
+
+// Decorator Abstract Class
+public abstract class CoffeeDecorator : ICoffee
+{
+    protected ICoffee _coffee;
+
+    public CoffeeDecorator(ICoffee coffee)
+    {
+        _coffee = coffee;
+    }
+
+    public virtual string GetDescription() => _coffee.GetDescription();
+    public virtual double GetCost() => _coffee.GetCost();
+}
+
+// Concrete Decorators
+public class MilkDecorator : CoffeeDecorator
+{
+    public MilkDecorator(ICoffee coffee) : base(coffee) { }
+
+    public override string GetDescription() => base.GetDescription() + ", Milk";
+    public override double GetCost() => base.GetCost() + 1.5;
+}
+
+public class SugarDecorator : CoffeeDecorator
+{
+    public SugarDecorator(ICoffee coffee) : base(coffee) { }
+
+    public override string GetDescription() => base.GetDescription() + ", Sugar";
+    public override double GetCost() => base.GetCost() + 0.5;
+}
+
+// Usage:
+// ICoffee coffee = new SimpleCoffee();
+// Console.WriteLine($"{coffee.GetDescription()} Cost: {coffee.GetCost():C}");
+
+// coffee = new MilkDecorator(coffee);
+// Console.WriteLine($"{coffee.GetDescription()} Cost: {coffee.GetCost():C}");
+
+// coffee = new SugarDecorator(coffee);
+// Console.WriteLine($"{coffee.GetDescription()} Cost: {coffee.GetCost():C}");
+        </code></pre>
+    </section>
+
+    <section>
+        <h2>6. Strategy Pattern</h2>
+        <h3>Explanation:</h3>
+        <p>The Strategy pattern defines a family of algorithms, encapsulates each one, and makes them interchangeable. Strategy lets the algorithm vary independently from clients that use it. This pattern is useful when you have multiple ways to perform a task, and you want to switch between these approaches at runtime.</p>
+        <h3>C# Example:</h3>
+        <pre><code class="language-csharp">
+// Strategy Interface
+public interface IStrategy
+{
+    void Execute();
+}
+
+// Concrete Strategies
+public class ConcreteStrategyA : IStrategy
+{
+    public void Execute()
+    {
+        Console.WriteLine("Executing ConcreteStrategyA");
+    }
+}
+
+public class ConcreteStrategyB : IStrategy
+{
+    public void Execute()
+    {
+        Console.WriteLine("Executing ConcreteStrategyB");
+    }
+}
+
+// Context
+public class Context
+{
+    private IStrategy _strategy;
+
+    public Context() { }
+
+    public void SetStrategy(IStrategy strategy)
+    {
+        _strategy = strategy;
+    }
+
+    public void PerformOperation()
+    {
+        if (_strategy != null)
+        {
+            _strategy.Execute();
+        }
+        else
+        {
+            Console.WriteLine("No strategy set.");
+        }
+    }
+}
+
+// Usage:
+// Context context = new Context();
+
+// context.SetStrategy(new ConcreteStrategyA());
+// context.PerformOperation();
+
+// context.SetStrategy(new ConcreteStrategyB());
+// context.PerformOperation();
+        </code></pre>
+    </section>
+
+    <section>
+        <h2>7. Iterator Pattern</h2>
+        <h3>Explanation:</h3>
+        <p>The Iterator pattern provides a way to access the elements of an aggregate object sequentially without exposing its underlying representation. It decouples the traversal logic from the collection, allowing different traversal algorithms to be used without modifying the collection itself.</p>
+        <h3>C# Example:</h3>
+        <pre><code class="language-csharp">
+// Aggregate Interface
+public interface IAggregate&lt;T&gt;
+{
+    IIterator&lt;T&gt; CreateIterator();
+    int Count { get; }
+    T this[int index] { get; set; }
+}
+
+// Iterator Interface
+public interface IIterator&lt;T&gt;
+{
+    T First();
+    T Next();
+    bool IsDone();
+    T CurrentItem();
+}
+
+// Concrete Aggregate
+public class ConcreteAggregate&lt;T&gt; : IAggregate&lt;T&gt;
+{
+    private List&lt;T&gt; _items = new List&lt;T&gt;();
+
+    public int Count => _items.Count;
+
+    public T this[int index]
+    {
+        get { return _items[index]; }
+        set { _items.Insert(index, value); }
+    }
+
+    public void Add(T item)
+    {
+        _items.Add(item);
+    }
+
+    public IIterator&lt;T&gt; CreateIterator()
+    {
+        return new ConcreteIterator&lt;T&gt;(this);
+    }
+}
+
+// Concrete Iterator
+public class ConcreteIterator&lt;T&gt; : IIterator&lt;T&gt;
+{
+    private ConcreteAggregate&lt;T&gt; _aggregate;
+    private int _currentIndex;
+
+    public ConcreteIterator(ConcreteAggregate&lt;T&gt; aggregate)
+    {
+        _aggregate = aggregate;
+        _currentIndex = 0;
+    }
+
+    public T First()
+    {
+        _currentIndex = 0;
+        return _aggregate[_currentIndex];
+    }
+
+    public T Next()
+    {
+        _currentIndex++;
+        if (!IsDone())
+        {
+            return _aggregate[_currentIndex];
+        }
+        return default(T); // Or throw exception
+    }
+
+    public bool IsDone()
+    {
+        return _currentIndex >= _aggregate.Count;
+    }
+
+    public T CurrentItem()
+    {
+        return _aggregate[_currentIndex];
+    }
+}
+
+// Usage (using C# built-in IEnumerable/IEnumerator for simplicity, but showing the pattern)
+// In C#, IEnumerable and IEnumerator effectively implement the Iterator pattern.
+
+// public class MyCollection<T> : IEnumerable<T>
+// {
+//     private List<T> _items = new List<T>();
+
+//     public void Add(T item) { _items.Add(item); }
+
+//     public IEnumerator<T> GetEnumerator()
+//     {
+//         return _items.GetEnumerator();
+//     }
+
+//     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+//     {
+//         return GetEnumerator();
+//     }
+// }
+
+// // Usage:
+// MyCollection<string> collection = new MyCollection<string>();
+// collection.Add("Item 1");
+// collection.Add("Item 2");
+// collection.Add("Item 3");
+
+// foreach (string item in collection)
+// {
+//     Console.WriteLine(item);
+// }
+        </code></pre>
+    </section>
+
+    <section>
+        <h2>8. Adapter Pattern</h2>
+        <h3>Explanation:</h3>
+        <p>The Adapter pattern converts the interface of a class into another interface clients expect. Adapter lets classes work together that couldn't otherwise because of incompatible interfaces. It's often used when you need to integrate existing components with new code that expects a different interface.</p>
+        <h3>C# Example:</h3>
+        <pre><code class="language-csharp">
+// Target Interface
+public interface ITarget
+{
+    void Request();
+}
+
+// Adaptee (the class with the incompatible interface)
+public class Adaptee
+{
+    public void SpecificRequest()
+    {
+        Console.WriteLine("Adaptee's specific request.");
+    }
+}
+
+// Adapter
+public class Adapter : ITarget
+{
+    private Adaptee _adaptee;
+
+    public Adapter(Adaptee adaptee)
+    {
+        _adaptee = adaptee;
+    }
+
+    public void Request()
+    {
+        _adaptee.SpecificRequest();
+    }
+}
+
+// Usage:
+// Adaptee adaptee = new Adaptee();
+// ITarget target = new Adapter(adaptee);
+// target.Request();
+        </code></pre>
+    </section>
+
+    <section>
+        <h2>9. Observer Pattern</h2>
+        <h3>Explanation:</h3>
+        <p>The Observer pattern defines a one-to-many dependency between objects so that when one object (the subject) changes state, all its dependents (the observers) are notified and updated automatically. This promotes loose coupling between the subject and its observers.</p>
+        <h3>C# Example:</h3>
+        <pre><code class="language-csharp">
+// Subject Interface
+public interface ISubject
+{
+    void Attach(IObserver observer);
+    void Detach(IObserver observer);
+    void Notify();
+}
+
+// Observer Interface
+public interface IObserver
+{
+    void Update(string message);
+}
+
+// Concrete Subject
+public class ConcreteSubject : ISubject
+{
+    private List&lt;IObserver&gt; _observers = new List&lt;IObserver&gt;();
+    private string _state;
+
+    public string State
+    {
+        get { return _state; }
+        set
+        {
+            _state = value;
+            Notify();
+        }
+    }
+
+    public void Attach(IObserver observer)
+    {
+        _observers.Add(observer);
+        Console.WriteLine("Attached an observer.");
+    }
+
+    public void Detach(IObserver observer)
+    {
+        _observers.Remove(observer);
+        Console.WriteLine("Detached an observer.");
+    }
+
+    public void Notify()
+    {
+        Console.WriteLine("\nNotifying observers:");
+        foreach (var observer in _observers)
+        {
+            observer.Update(_state);
+        }
+    }
+}
+
+// Concrete Observer
+public class ConcreteObserver : IObserver
+{
+    private string _name;
+
+    public ConcreteObserver(string name)
+    {
+        _name = name;
+    }
+
+    public void Update(string message)
+    {
+        Console.WriteLine($"Observer {_name}: Subject's state is {message}");
+    }
+}
+
+// Usage:
+// ConcreteSubject subject = new ConcreteSubject();
+// ConcreteObserver observer1 = new ConcreteObserver("Observer 1");
+// ConcreteObserver observer2 = new ConcreteObserver("Observer 2");
+
+// subject.Attach(observer1);
+// subject.Attach(observer2);
+
+// subject.State = "First State Change";
+// subject.State = "Second State Change";
+
+// subject.Detach(observer1);
+// subject.State = "Third State Change";
+        </code></pre>
+    </section>
+
+    <section>
+        <h2>10. Composite Pattern</h2>
+        <h3>Explanation:</h3>
+        <p>The Composite pattern composes objects into tree structures to represent part-whole hierarchies. Composite lets clients treat individual objects and compositions of objects uniformly. This is useful for building recursive structures like file systems, UI components, or organizational charts.</p>
+        <h3>C# Example:</h3>
+        <pre><code class="language-csharp">
+// Component Interface
+public abstract class Component
+{
+    protected string name;
+
+    public Component(string name)
+    {
+        this.name = name;
+    }
+
+    public abstract void Display(int indent);
+}
+
+// Leaf
+public class Leaf : Component
+{
+    public Leaf(string name) : base(name) { }
+
+    public override void Display(int indent)
+    {
+        Console.WriteLine(new string('-', indent) + " " + name);
+    }
+}
+
+// Composite
+public class Composite : Component
+{
+    private List&lt;Component&gt; _children = new List&lt;Component&gt;();
+
+    public Composite(string name) : base(name) { }
+
+    public void Add(Component component)
+    {
+        _children.Add(component);
+    }
+
+    public void Remove(Component component)
+    {
+        _children.Remove(component);
+    }
+
+    public override void Display(int indent)
+    {
+        Console.WriteLine(new string('-', indent) + "+ " + name);
+        foreach (Component component in _children)
+        {
+            component.Display(indent + 2);
+        }
+    }
+}
+
+// Usage:
+// Composite root = new Composite("Root");
+// root.Add(new Leaf("Leaf A"));
+// Composite branch1 = new Composite("Branch 1");
+// branch1.Add(new Leaf("Leaf B1"));
+// branch1.Add(new Leaf("Leaf B2"));
+// root.Add(branch1);
+// root.Display(1);
+        </code></pre>
+    </section>
+
+    <section>
+        <h2>11. Command Pattern</h2>
+        <h3>Explanation:</h3>
+        <p>The Command pattern encapsulates a request as an object, thereby letting you parameterize clients with different requests, queue or log requests, and support undoable operations. It decouples the sender of a request from the object that performs the request.</p>
+        <h3>C# Example:</h3>
+        <pre><code class="language-csharp">
+// Command Interface
+public interface ICommand
+{
+    void Execute();
+    void Undo();
+}
+
+// Receiver
+public class Light
+{
+    public void TurnOn() { Console.WriteLine("Light is ON"); }
+    public void TurnOff() { Console.WriteLine("Light is OFF"); }
+}
+
+// Concrete Commands
+public class TurnOnLightCommand : ICommand
+{
+    private Light _light;
+
+    public TurnOnLightCommand(Light light) { _light = light; }
+
+    public void Execute() { _light.TurnOn(); }
+    public void Undo() { _light.TurnOff(); }
+}
+
+public class TurnOffLightCommand : ICommand
+{
+    private Light _light;
+
+    public TurnOffLightCommand(Light light) { _light = light; }
+
+    public void Execute() { _light.TurnOff(); }
+    public void Undo() { _light.TurnOn(); }
+}
+
+// Invoker
+public class RemoteControl
+{
+    private ICommand _command;
+    private Stack&lt;ICommand&gt; _history = new Stack&lt;ICommand&gt;();
+
+    public void SetCommand(ICommand command)
+    {
+        _command = command;
+    }
+
+    public void PressButton()
+    {
+        _command.Execute();
+        _history.Push(_command);
+    }
+
+    public void PressUndo()
+    {
+        if (_history.Any())
+        {
+            ICommand lastCommand = _history.Pop();
+            lastCommand.Undo();
+        }
+        else
+        {
+            Console.WriteLine("Nothing to undo.");
+        }
+    }
+}
+
+// Usage:
+// Light livingRoomLight = new Light();
+// ICommand turnOn = new TurnOnLightCommand(livingRoomLight);
+// ICommand turnOff = new TurnOffLightCommand(livingRoomLight);
+
+// RemoteControl remote = new RemoteControl();
+
+// remote.SetCommand(turnOn);
+// remote.PressButton(); // Light is ON
+
+// remote.SetCommand(turnOff);
+// remote.PressButton(); // Light is OFF
+
+// remote.PressUndo(); // Light is ON (undo turn off)
+// remote.PressUndo(); // Light is OFF (undo turn on)
+// remote.PressUndo(); // Nothing to undo.
+        </code></pre>
+    </section>
+
+    <footer>
+        <p>2025</p>
+    </footer>
+
+    <script src="js/theme-toggle.js" defer></script>
+</body>
+</html>
