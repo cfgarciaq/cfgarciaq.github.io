@@ -17,7 +17,7 @@ if (savedTheme === 'dark') {
   toggleBtn.textContent = '🌙';
 } else {
   // Si no hay preferencia guardada, usar la del sistema
-  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
   if (prefersDark) {
     document.body.classList.add('dark');
     toggleBtn.textContent = '🌞';
