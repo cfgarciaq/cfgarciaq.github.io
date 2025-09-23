@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Carlos Felipe García Quiroga - Portfolio</title>
+  <title>Carlos García</title>
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/image-carousel.css"/>
 </head>
@@ -11,23 +11,27 @@
 
     <button id="theme-toggle" aria-label="Toggle Theme">🌙</button>
 
-    <header>
-        <h1>Carlos Felipe García Quiroga</h1>
-        <p>Unity & Web Developer | B: Multimedia Engineer | | Trilingual (ES/EN/FR)</p>
+    <header id="navigation">
+        <div id="nav-links">
+            <a href="index.html">Home</a>
+            <a href="design-patterns.html">Design Patterns</a>
+        </div>
     </header>
-
-    <section id="navigation">        
-        <nav>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="design-patterns.html">Design Patterns</a></li>
-            </ul>
-        </nav>
-    </section>
   
     <section id="about">
-        <h2>About Me</h2>
-        <p>I'm a multimedia engineer passionate about game development, interactive media, and creative technology. With experience in Unity, C#, web technologies, and digital design, I'm eager to contribute to innovative projects and grow as a developer.</p>
+        <div id="about-content">
+            <img id="profile-photo" src="img/profile/carlos-garcia-profile-1.jpg" alt="Carlos profile photo" />
+            <div id="about-text">
+                <h1>Carlos Felipe García Quiroga</h1>
+                <p>Multimedia Engineer | Unity & Web Developer | Trilingual (ES/EN/FR)</p>
+                <p>Multimedia engineer passionate about game development, interactive media, and creative technology. With experience in Unity, C#, web technologies, and digital design, I'm eager to contribute to innovative projects and grow as a developer.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="social-media">
+        <a href="https://www.linkedin.com/in/cfgarciaquiroga" target="_blank" aria-label="LinkedIn Profile">LinkedIn</a>
+        <a href="mailto:cfgarciaq@gmail.com" aria-label="Email Carlos">Email</a>
     </section>
 
     <section id="badges">
@@ -43,7 +47,7 @@
     <section id="skills">
         <h2>Skills</h2>
         <ul>
-            <li>Languages: C#, JavaScript, HTML/CSS, SQL, Python, Java, C++, C</li>
+            <li>Languages: C#, JavaScript, HTML/CSS, SQL</li>
             <li>Tools: Unity, Photoshop, Illustrator, Blender, Moodle, Git</li>
             <li>Languages Spoken: Spanish (native), English (C1), French (C1)</li>
         </ul>
@@ -59,7 +63,7 @@
     <section id="experience">
         <h2>Experience</h2>
         <div class="job">
-                <h4>Technical Support Specialist (Remote) – <em>Kajabi LLC</em></h4>
+                <h3>Technical Support Specialist (Remote) – <em>Kajabi LLC</em></h3>
                 <p><em>October 2024 – May 2025</em></p>
                 <ul>
                     <li>Provided support to international customers in English, Spanish, and occasionally French.</li>
@@ -117,43 +121,48 @@
 
     <section id="projects">
         <h2>Projects</h2>
+        
+        <h3>"Mundo Mascotas" - Educational Game prototype</h3>
         <div class="project">
-            <h3>Accessible Educational Game for Visually Impaired Children</h3>
-            <p>Mobile game developed in Unity as part of my thesis, focused on inclusive education.</p>
-        </div>
-        <div class="project">
-            <h3>Interactive Games with Kinect</h3>
-            <p>Created several motion-based games during my internship and freelance work with an interactive advertising company.</p>
-        </div>
-        <div>
-            <h3>Demo Adgame for ElBus</h3>
-            <iframe width="560" height="315" src="https://www.youtube.com/embed/RY2VnnNOhbw?si=beLNALPjshe-ptE7" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-        </div>
-        <div>
-            <h3>Desktop game prototype</h3>
-            <iframe width="560" height="315" src="https://www.youtube.com/embed/zMK1UT9ZsZs?si=6NoWFbXGC5ZCkx4j" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-        </div>
-        <div class="carousel-container">
-            <div class="carousel-images" id="carouselImages">
-                <!-- Placeholder images - replace with your own! -->
-                <img src="img/mundomascotas-mainmenu.PNG" alt="application main menu">
-                <img src="img/mundomascotas-levelsmenu-1.PNG" alt="application levels menu displaying first level">
-                <img src="img/mundomascotas-levelsmenu-2.PNG" alt="application levels menu displaying second level">
-                <img src="img/mundomascotas-levelsmenu-3.PNG" alt="application levels menu displaying third level">
-                <img src="img/mundomascotas-level-1.PNG" alt="first level of the game">
-                <img src="img/mundomascotas-level-2.PNG" alt="second level of the game">
-                <img src="img/mundomascotas-level-3.PNG" alt="third level of the game">
-                <img src="img/mundomascotas-settings-accesibility-1.PNG" alt="accessibility settings in the application">
-                <img src="img/mundomascotas-settings-accesibility-2.PNG" alt="accessibility settings in the application">
-            </div>
-
-            <button class="carousel-button prev" id="prevBtn">&#10094;</button>
-            <button class="carousel-button next" id="nextBtn">&#10095;</button>
-
-            <div class="carousel-dots" id="carouselDots">
-                <!-- Dots will be dynamically generated by JavaScript -->
+            <p>Prototype of an educational game for children aged 6-10, developed in Unity as part of my master's thesis. The game is designed to be accessible for visually impaired children, featuring audio cues, high-contrast visuals, and simplified controls to ensure an inclusive gaming experience.</p>
+            <div class="carousel-container">
+                <div class="carousel-images" id="carouselImages">
+                    <!-- Placeholder images - replace with your own! -->
+                    <img src="img/carousel-mundomascotas/mundomascotas-mainmenu.PNG" alt="application main menu">
+                    <img src="img/carousel-mundomascotas/mundomascotas-levelsmenu-1.PNG" alt="application levels menu displaying first level">
+                    <img src="img/carousel-mundomascotas/mundomascotas-levelsmenu-3.PNG" alt="application levels menu displaying third level">
+                    <img src="img/carousel-mundomascotas/mundomascotas-level-1.PNG" alt="first level of the game">
+                    <img src="img/carousel-mundomascotas/mundomascotas-level-2.PNG" alt="second level of the game">
+                    <img src="img/carousel-mundomascotas/mundomascotas-level-3.PNG" alt="third level of the game">
+                    <img src="img/carousel-mundomascotas/mundomascotas-settings-accesibility-1.PNG" alt="accessibility settings in the application">
+                    <img src="img/carousel-mundomascotas/mundomascotas-levelsmenu-2.PNG" alt="application levels menu displaying second level">
+                    <img src="img/carousel-mundomascotas/mundomascotas-settings-accessibility-2.PNG" alt="accessibility settings in the application">
+                </div>
+    
+                <button class="carousel-button prev" id="prevBtn">&#10094;</button>
+                <button class="carousel-button next" id="nextBtn">&#10095;</button>
+    
+                <div class="carousel-dots" id="carouselDots">
+                    <!-- Dots will be dynamically generated by JavaScript -->
+                </div>
             </div>
         </div>
+        
+        <h3>Interactive Games with Kinect</h3>
+        <div class="project">
+            <p>Created several motion-based games during my internship and freelance work for an interactive advertising company.</p>
+            <div class="video-container">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/RY2VnnNOhbw?si=beLNALPjshe-ptE7" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+        </div>
+        
+        <h3>Desktop game prototype</h3>
+        <div class="project">
+            <div class="video-container">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/zMK1UT9ZsZs?si=6NoWFbXGC5ZCkx4j" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+        </div>
+        
     </div>
 
     </section>
